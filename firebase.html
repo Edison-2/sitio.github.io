@@ -32,6 +32,13 @@
             const edad = document.getElementById("edad").value;
 
             console.log(nombre, edad);
+            push(
+                ref(database, 'septimo'),
+                {
+                    name:nombre,
+                    eda:edad
+                }
+            );
         }
       </script>
 
