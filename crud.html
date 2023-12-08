@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CRUD Firebase - Pacientes</title>
+</head>
+<body>
+  <h1>Registrar Paciente</h1>
+  <form id="pacienteForm">
+    <label for="cedula">Cédula:</label>
+    <input type="text" id="cedula" required><br><br>
+
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" required><br><br>
+
+    <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+    <input type="date" id="fechaNacimiento" required><br><br>
+
+    <label for="direccion">Dirección:</label>
+    <input type="text" id="direccion" required><br><br>
+
+    <button type="submit">Registrar Paciente</button>
+  </form>
+
+  <h2>Listado de Pacientes</h2>
+  <ul id="pacientesList"></ul>
+
+  <!-- Importar Firebase y tu archivo de JavaScript -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js"></script>
+  <script src="tu_archivo_js.js"></script>
+</body>
+</html>
