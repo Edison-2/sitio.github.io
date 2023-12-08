@@ -18,8 +18,8 @@
 
     <label for="direccion">Dirección:</label>
     <input type="text" id="direccion" required><br><br>
-
-    <button type="submit">Registrar Paciente</button>
+    <button type="button" onclick="crearRegistro()">Crear</button>
+    
   </form>
 
   <h2>Listado de Pacientes</h2>
@@ -47,45 +47,24 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
         const db = firebase.database();
+        window.crearRegistro = function () {
+            const cedula = document.getElementById('cedula').value;
+            const nombre = document.getElementById('nombre').value;
+            const fechaNacimiento = document.getElementById('fechaNacimiento').value;
+            const direccion = document.getElementById('direccion').value;
+                console.log(nombre, cedula, fechaNacimiento, direccion);
+                
+                push(
+                    ref(database, 'sistemasA'),
+                    {
+                        cedula: cedula,
+                        nombre: nombre,
+                        fechaNacimiento: fechaNacimiento,
+                        direccion: direccion
+                    }
+                );
 
-        // Referencia a la colección 'pacientes'
-        const pacientesRef = db.ref('pacientes');
-
-        // Función para guardar un paciente en Firebase
-        document.getElementById('pacienteForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const cedula = document.getElementById('cedula').value;
-        const nombre = document.getElementById('nombre').value;
-        const fechaNacimiento = document.getElementById('fechaNacimiento').value;
-        const direccion = document.getElementById('direccion').value;
-
-        // Guardar en la base de datos
-        pacientesRef.push({
-            cedula: cedula,
-            nombre: nombre,
-            fechaNacimiento: fechaNacimiento,
-            direccion: direccion
-        });
-
-        // Limpiar el formulario después de enviar
-        document.getElementById('pacienteForm').reset();
-        });
-
-        // Mostrar la lista de pacientes
-        pacientesRef.on('value', function(snapshot) {
-        const pacientesList = document.getElementById('pacientesList');
-        pacientesList.innerHTML = '';
-
-        snapshot.forEach(function(childSnapshot) {
-            const paciente = childSnapshot.val();
-            const listItem = document.createElement('li');
-
-            listItem.innerText = `Cédula: ${paciente.cedula}, Nombre: ${paciente.nombre}, Fecha de Nacimiento: ${paciente.fechaNacimiento}, Dirección: ${paciente.direccion}`;
-            
-            pacientesList.appendChild(listItem);
-        });
-        });
+            }
 
         </script>
 
