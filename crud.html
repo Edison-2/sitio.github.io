@@ -1,6 +1,5 @@
 <html>
     <head>
-
     </head>
     <body>
         <form id="crud-form">
@@ -10,8 +9,6 @@
             <input type="number" id = "edad">
             <button type="button" onclick="crearRegistro()">Crear</button>
         </form>
-
-
         <script type="module">
             // Import the functions you need from the SDKs you need
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
@@ -43,10 +40,10 @@
                     ref(database, 'septimo'),
                     {
                         name: nombre,
-                        age: edad 
+                        age: edad
+                    } 
                     
                 );
-
             }
           </script>
     </body>
