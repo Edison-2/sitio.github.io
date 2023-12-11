@@ -66,8 +66,25 @@ button:hover {
             <input type="email" id="email">
             <label for="telefono">Teléfono:</label>
             <input type="tel" id="telefono">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <button type="button" onclick="crearRegistro()">Crear</button>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" onclick="leer()">leer</button>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" onclick="eliminar()">eliminar</button>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" onclick="crearRegistro()">actualizar</button>
+                    </div>
+
+                </div>
+
+            </div>
             
-            <button type="button" onclick="crearRegistro()">Crear</button>
         </form>
     </div>
     <script type="module">
@@ -109,6 +126,22 @@ button:hover {
                 } 
             );
         }
+        window.leer = function () {
+            const databaseRef = ref(database, 'septimo');
+            onValue(databaseRef, (snapshot) => {
+                const data = snapshot.val();
+                console.log("Registros:", data);
+            });
+        }
+        window.eliminar = function () {
+                const registroId = document.getElementById("idOpciones").value;
+                if (!registroId) {
+                    console.log("Por favor, ingresa un ID válido para eliminar el registro.");
+                    return;
+                }
+                remove(ref(database, septimo/${registroId}));
+                console.log("Registro eliminado con éxito.");
+            }
       </script>
 </body>
 </html>
