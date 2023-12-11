@@ -90,7 +90,7 @@ button:hover {
                         <th>Edad</th>
                         <th>Email</th>
                         <th>Teléfono</th>
-                        <th><button type="button" onclick="eliminar()">eliminar</button>                    </th>
+                        
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -170,6 +170,7 @@ window.leerRegistros = function () {
                 <td>${age}</td>
                 <td>${email}</td>
                 <td>${phone}</td>
+                <td>${<button type="button" onclick="eliminar()">eliminar</button>                    }</td>
             `;
             tableBody.appendChild(newRow);
         });
