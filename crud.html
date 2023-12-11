@@ -55,8 +55,10 @@ button {
 button:hover {
     background-color: #45a049;
 }
+ 
 </style>
     <div class="container">
+        <h1>Registro de paciente</h1>
         <form id="crud-form">
             <label for="id">ID:</label>
             <input type="text" id="id">
@@ -70,24 +72,30 @@ button:hover {
             <input type="tel" id="telefono">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="col-md-3">
-                        <button type="button" onclick="crearRegistro()">Crear</button>
-                    </div>
-                    <div class="col-md-3">
-                        <button type="button" onclick="leer()">leer</button>
-                    </div>
-                    <div class="col-md-3">
-                        <button type="button" onclick="eliminar()">eliminar</button>
-                    </div>
-                    <div class="col-md-3">
+                    
+                        <button type="button" onclick="crearRegistro()">Crear</button>                    
+                        <button type="button" onclick="leer()">leer</button>                    
+                        <button type="button" onclick="eliminar()">eliminar</button>                    
                         <button type="button" onclick="crearRegistro()">actualizar</button>
-                    </div>
-
                 </div>
 
             </div>
             
         </form>
+        <table id="table-data">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Aquí se mostrarán los datos -->
+            </tbody>
+        </table>
     </div>
     <script type="module">
         // Importa las funciones que necesitas de los SDK que estás utilizando
@@ -139,6 +147,35 @@ button:hover {
         }
         
        
+        // ... tu código anterior
+
+window.leerRegistros = function () {
+    const tableBody = document.getElementById('table-body');
+    tableBody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
+
+    // Leer los datos desde Firebase y actualizar la tabla
+    const databaseRef = ref(database, 'Daquilema');
+    onValue(databaseRef, (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+            const data = childSnapshot.val();
+            const { name, age, email, phone } = data;
+
+            // Agregar una fila a la tabla con los datos
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${childSnapshot.key}</td>
+                <td>${name}</td>
+                <td>${age}</td>
+                <td>${email}</td>
+                <td>${phone}</td>
+            `;
+            tableBody.appendChild(newRow);
+        });
+    });
+}
+
+// Resto de tu código para crear, actualizar y eliminar registros
+
       </script>
 </body>
 </html>
