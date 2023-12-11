@@ -131,7 +131,7 @@ button:hover {
             console.log(id,nombre, edad, email, telefono);
             
             push(
-                ref(database, 'Daquilema'),
+                ref(database, 'EdisonDaquilema'),
                 {
                     id:id,
                     name: nombre,
@@ -142,7 +142,7 @@ button:hover {
             );
         }
         window.leer = function () {
-            const databaseRef = ref(database, 'Daquilema');
+            const databaseRef = ref(database, 'EdisonDaquilema');
             onValue(databaseRef, (snapshot) => {
                 const data = snapshot.val();
                 console.log("Registros:", data);
