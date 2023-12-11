@@ -156,7 +156,7 @@ button:hover {
     const tableBody = document.getElementById('table-body');
     tableBody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
 
-    const databaseRef = ref(database, 'EdisonDaquilema');
+    const databaseRef = ref(database, 'Daquilema');
     onValue(databaseRef, (snapshot) => {
         snapshot.forEach((childSnapshot) => {
             const data = childSnapshot.val();
