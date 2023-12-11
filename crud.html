@@ -181,8 +181,8 @@ button:hover {
     }
 
     window.eliminarRegistro = function (id) {
-        const databaseRef = ref(database, 'EdisonDaquilema');
-        remove(child(databaseRef, id));
+        const databaseRef = ref(database, 'EdisonDaquilema/' + id);
+        remove(databaseRef);
     }
 
     window.prepararActualizacion = function (id, name, age, email, phone) {
