@@ -92,7 +92,7 @@ button:hover {
     <script type="module">
         // Importa las funciones que necesitas de los SDK que estás utilizando
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
       
         // Configuración de tu aplicación Firebase
         const firebaseConfig = {
