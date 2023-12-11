@@ -2,9 +2,55 @@
 <head>
 </head>
 <body>
-    <script>
-        
-    </script>
+    <style> 
+    /* Estilos para el contenedor principal */
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #7fffd4; /* Fondo turquesa */
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.8); /* Cuadrado opaco */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+/* Estilos para el formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+</style>
     <div class="container">
         <form id="crud-form">
             <label for="nombre">Nombre:</label>
