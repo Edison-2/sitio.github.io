@@ -7,10 +7,7 @@
             <input type="text" id = "nombre">
             <label for="edad">Edad:</label>
             <input type="number" id = "edad">
-            <label for="fono">Fono</label>
-            <input type="number" id="fono">
-            <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fecha">
+            
             <button type="button" onclick="crearRegistro()">Crear</button>
         </form>
         <script type="module">
@@ -38,8 +35,7 @@
             window.crearRegistro = function () {
                 const nombre = document.getElementById("nombre").value;
                 const edad = document.getElementById("edad").value;
-                const fono = document.getElementById("fono").values;
-                const fecha = document.getElementById("fecha").values;
+               
                 console.log(nombre, edad);
                 
                 push(
@@ -47,8 +43,6 @@
                     {
                         name: nombre,
                         age: edad, 
-                        fono: fono,
-                        fecha_nacimiento:fecha,
                     } 
                     
                 );
