@@ -2,18 +2,23 @@
 <head>
 </head>
 <body>
-    <form id="crud-form">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre">
-        <label for="edad">Edad:</label>
-        <input type="number" id="edad">
-        <label for="email">Email:</label>
-        <input type="email" id="email">
-        <label for="telefono">Teléfono:</label>
-        <input type="tel" id="telefono">
+    <script>
         
-        <button type="button" onclick="crearRegistro()">Crear</button>
-    </form>
+    </script>
+    <div class="container">
+        <form id="crud-form">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre">
+            <label for="edad">Edad:</label>
+            <input type="number" id="edad">
+            <label for="email">Email:</label>
+            <input type="email" id="email">
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono">
+            
+            <button type="button" onclick="crearRegistro()">Crear</button>
+        </form>
+    </div>
     <script type="module">
         // Importa las funciones que necesitas de los SDK que estás utilizando
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
