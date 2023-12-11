@@ -90,6 +90,7 @@ button:hover {
                         <th>Edad</th>
                         <th>Email</th>
                         <th>Teléfono</th>
+                        <th> Acciones</th>
                         
                     </tr>
                 </thead>
@@ -151,18 +152,17 @@ button:hover {
        
         // ... tu código anterior
 
-window.leerRegistros = function () {
+        window.leerRegistros = function () {
     const tableBody = document.getElementById('table-body');
     tableBody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
 
-    // Leer los datos desde Firebase y actualizar la tabla
-    const databaseRef = ref(database, 'Daquilema');
+    const databaseRef = ref(database, 'EdisonDaquilema');
     onValue(databaseRef, (snapshot) => {
         snapshot.forEach((childSnapshot) => {
             const data = childSnapshot.val();
             const { name, age, email, phone } = data;
 
-            // Agregar una fila a la tabla con los datos
+            // Crear una fila nueva en la tabla con los datos y el botón eliminar
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
                 <td>${childSnapshot.key}</td>
@@ -170,13 +170,19 @@ window.leerRegistros = function () {
                 <td>${age}</td>
                 <td>${email}</td>
                 <td>${phone}</td>
-                <th><button type="button" onclick="eliminar()">eliminar</button></th>
-                
+                <td><button onclick="eliminarRegistro('${childSnapshot.key}')">Eliminar</button></td>
             `;
             tableBody.appendChild(newRow);
         });
     });
 }
+
+window.eliminarRegistro = function (id) {
+    // Lógica para eliminar un registro específico según su ID
+    const databaseRef = ref(database, 'EdisonDaquilema');
+    remove(child(databaseRef, id));
+}
+
 
 // Resto de tu código para crear, actualizar y eliminar registros
 
