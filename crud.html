@@ -58,6 +58,8 @@ button:hover {
 </style>
     <div class="container">
         <form id="crud-form">
+            <label for="id">ID:</label>
+            <input type="text" id="id">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre">
             <label for="edad">Edad:</label>
@@ -109,16 +111,18 @@ button:hover {
         const database = getDatabase(app);
 
         window.crearRegistro = function () {
+            const id = document.getElementById("id").value;
             const nombre = document.getElementById("nombre").value;
             const edad = document.getElementById("edad").value;
             const email = document.getElementById("email").value;
             const telefono = document.getElementById("telefono").value;
            
-            console.log(nombre, edad, email, telefono);
+            console.log(id,nombre, edad, email, telefono);
             
             push(
-                ref(database, 'EdisonDaquilema'),
+                ref(database, 'Daquilema'),
                 {
+                    id:id,
                     name: nombre,
                     age: edad,
                     email: email,
@@ -133,15 +137,7 @@ button:hover {
                 console.log("Registros:", data);
             });
         }
-        window.eliminar = function () {
-                const registroId = document.getElementById("idOpciones").value;
-                if (!registroId) {
-                    console.log("Por favor, ingresa un ID válido para eliminar el registro.");
-                    return;
-                }
-                remove(ref(database, septimo/${registroId}));
-                console.log("Registro eliminado con éxito.");
-            }
+       
       </script>
 </body>
 </html>
