@@ -58,43 +58,47 @@ button:hover {
  
 </style>
 <div class="container">
-    <form id="crud-form">
-        <label for="id">ID:</label>
-        <input type="text" id="id">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre">
-        <label for="edad">Edad:</label>
-        <input type="number" id="edad">
-        <label for="telefono">Teléfono:</label>
-        <input type="tel" id="telefono">
-        <label for="enfermedad">Enfermedad:</label>
-        <input type="text" id="enfermedad">
-        <label for="sintomas">Síntomas:</label>
-        <textarea id="sintomas"></textarea>
-        
-        <div class="button-container">
-            <button type="button" onclick="crearRegistro()">Crear</button>
-            <button type="button" onclick="leerRegistros()">Mostrar Datos</button>
-        </div>
-    </form>
+        <form id="crud-form">
+            <label for="id">ID de reserva:</label>
+            <input type="text" id="id">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre">
+            <label for="fecha">Fecha de reserva:</label>
+            <input type="date" id="fecha">
+            <label for="duracion">Duración (días):</label>
+            <input type="number" id="duracion">
+            <label for="tipo">Tipo de campamento:</label>
+            <select id="tipo">
+                <option value="Estándar">Estándar</option>
+                <option value="Premium">Premium</option>
+                <option value="Deluxe">Deluxe</option>
+            </select>
+            <label for="notas">Notas:</label>
+            <textarea id="notas"></textarea>
+            
+            <div class="button-container">
+                <button type="button" onclick="crearReserva()">Crear Reserva</button>
+                <button type="button" onclick="mostrarReservas()">Mostrar Reservas</button>
+            </div>
+        </form>
 
-    <table id="table-data">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Edad</th>
-                <th>Teléfono</th>
-                <th>Enfermedad</th>
-                <th>Síntomas</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="table-body">
-            <!-- Aquí se mostrarán los datos -->
-        </tbody>
-    </table>
-</div>
+        <table id="table-data">
+            <thead>
+                <tr>
+                    <th>ID de reserva</th>
+                    <th>Nombre</th>
+                    <th>Fecha de reserva</th>
+                    <th>Duración (días)</th>
+                    <th>Tipo de campamento</th>
+                    <th>Notas</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Aquí se mostrarán las reservas -->
+            </tbody>
+        </table>
+    </div>
     <script type="module">
         // Importa las funciones que necesitas de los SDK que estás utilizando
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
@@ -120,96 +124,97 @@ button:hover {
     // Configurar Firebase (ya proporcionado en ejemplos anteriores)
     // ...
 
-    window.leerRegistros = function () {
+    window.mostrarReservas = function () {
         const tableBody = document.getElementById('table-body');
-        tableBody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
+        tableBody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevas reservas
 
-        const databaseRef = ref(database, 'DaquilemaEdison');
+        const databaseRef = ref(database, 'reservasCampamento');
         onValue(databaseRef, (snapshot) => {
             snapshot.forEach((childSnapshot) => {
                 const data = childSnapshot.val();
-                const { id, nombre, edad, telefono, enfermedad, sintomas } = data;
+                const { id, nombre, fecha, duracion, tipo, notas } = data;
 
-                const newRow = crearFilaTabla(childSnapshot.key, id, nombre, edad, telefono, enfermedad, sintomas);
+                const newRow = crearFilaTabla(childSnapshot.key, id, nombre, fecha, duracion, tipo, notas);
                 tableBody.appendChild(newRow);
             });
         });
     }
 
-    function crearFilaTabla(key, id, nombre, edad, telefono, enfermedad, sintomas) {
+    function crearFilaTabla(key, id, nombre, fecha, duracion, tipo, notas) {
         const newRow = document.createElement('tr');
         newRow.innerHTML = `
             <td>${id}</td>
             <td>${nombre}</td>
-            <td>${edad}</td>
-            <td>${telefono}</td>
-            <td>${enfermedad}</td>
-            <td>${sintomas}</td>
+            <td>${fecha}</td>
+            <td>${duracion}</td>
+            <td>${tipo}</td>
+            <td>${notas}</td>
             <td>
-                <button onclick="eliminarRegistro('${key}')">Eliminar</button>
-                <button onclick="prepararActualizacion('${key}', '${id}', '${nombre}', '${edad}', '${telefono}', '${enfermedad}', '${sintomas}')">Actualizar</button>
+                <button onclick="eliminarReserva('${key}')">Eliminar</button>
+                <button onclick="prepararEdicion('${key}', '${id}', '${nombre}', '${fecha}', '${duracion}', '${tipo}', '${notas}')">Editar</button>
             </td>
         `;
         return newRow;
     }
 
-    window.crearRegistro = function () {
+    window.crearReserva = function () {
         const id = document.getElementById('id').value;
         const nombre = document.getElementById('nombre').value;
-        const edad = document.getElementById('edad').value;
-        const telefono = document.getElementById('telefono').value;
-        const enfermedad = document.getElementById('enfermedad').value;
-        const sintomas = document.getElementById('sintomas').value;
+        const fecha = document.getElementById('fecha').value;
+        const duracion = document.getElementById('duracion').value;
+        const tipo = document.getElementById('tipo').value;
+        const notas = document.getElementById('notas').value;
 
-        const databaseRef = ref(database, 'DaquilemaEdison');
+        const databaseRef = ref(database, 'reservasCampamento');
         push(databaseRef, {
             id: id,
             nombre: nombre,
-            edad: edad,
-            telefono: telefono,
-            enfermedad: enfermedad,
-            sintomas: sintomas
+            fecha: fecha,
+            duracion: duracion,
+            tipo: tipo,
+            notas: notas
         });
     }
 
-    window.prepararActualizacion = function (key, id, nombre, edad, telefono, enfermedad, sintomas) {
+    window.prepararEdicion = function (key, id, nombre, fecha, duracion, tipo, notas) {
         document.getElementById('id').value = id;
         document.getElementById('nombre').value = nombre;
-        document.getElementById('edad').value = edad;
-        document.getElementById('telefono').value = telefono;
-        document.getElementById('enfermedad').value = enfermedad;
-        document.getElementById('sintomas').value = sintomas;
+        document.getElementById('fecha').value = fecha;
+        document.getElementById('duracion').value = duracion;
+        document.getElementById('tipo').value = tipo;
+        document.getElementById('notas').value = notas;
 
-        // Guardar el key (ID del registro) en un atributo del botón Actualizar
-        const botonActualizar = document.getElementById('actualizarBtn');
-        botonActualizar.setAttribute('data-key', key);
+        // Guardar el key (ID de la reserva) en un atributo del botón Editar
+        const botonEditar = document.getElementById('editarBtn');
+        botonEditar.setAttribute('data-key', key);
     }
 
-    window.actualizarRegistro = function () {
-        const key = document.getElementById('actualizarBtn').getAttribute('data-key');
+    window.actualizarReserva = function () {
+        const key = document.getElementById('editarBtn').getAttribute('data-key');
         const id = document.getElementById('id').value;
         const nombre = document.getElementById('nombre').value;
-        const edad = document.getElementById('edad').value;
-        const telefono = document.getElementById('telefono').value;
-        const enfermedad = document.getElementById('enfermedad').value;
-        const sintomas = document.getElementById('sintomas').value;
+        const fecha = document.getElementById('fecha').value;
+        const duracion = document.getElementById('duracion').value;
+        const tipo = document.getElementById('tipo').value;
+        const notas = document.getElementById('notas').value;
 
-        const databaseRef = ref(database, 'DaquilemaEdison' + key);
+        const databaseRef = ref(database, 'reservasCampamento/' + key);
         update(databaseRef, {
             id: id,
             nombre: nombre,
-            edad: edad,
-            telefono: telefono,
-            enfermedad: enfermedad,
-            sintomas: sintomas
+            fecha: fecha,
+            duracion: duracion,
+            tipo: tipo,
+            notas: notas
         });
     }
 
-    window.eliminarRegistro = function (key) {
-        const databaseRef = ref(database, 'DaquilemaEdison');
+    window.eliminarReserva = function (key) {
+        const databaseRef = ref(database, 'reservasCampamento');
         remove(child(databaseRef, key));
     }
 }
+
 
 
       </script>
