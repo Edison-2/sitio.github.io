@@ -4,7 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro</title>
-  
+  <div class="col-md-12">
+    <header>
+    <h1>Campamento de Aventura</h1>
+    
+    <nav>
+        <ul>
+          <li><a href="form.html">Saludo</a></li>
+          <li><a href="#registro">Registros</a></li>
+            <li><a href="#informacion">Información</a></li>
+            <li><a href="#galeria">Galería</a></li>
+            <li><a href="#contacto">Contactanos</a></li>
+            <li> <a href="crud.html">Reserva</a></li>
+        </ul>
+    </nav>
+</header>
+  </div>
   <div>
 
   <!-- Agrega Bootstrap CSS -->
@@ -80,7 +95,8 @@
       </div>
     </div>
   </div>
-</div>
+
+  
   <!-- Agrega Bootstrap JS (opcional, para funcionalidades adicionales) -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script type="module">
@@ -154,7 +170,7 @@
 
         if (doctorIdToEdit) {
             // Actualizar doctor existente
-            update(ref(database, EdisonDaquilema/${doctorIdToEdit}), {
+            update(ref(database, 'EdisonDaquilema/${doctorIdToEdit}'), {
                 nombre: nombre,
                 especialidad: especialidad,
                 direccion: direccion,
@@ -180,11 +196,15 @@
         // Actualizar la lista de doctores
         actualizarListaDoctores();
     }
+    console.log("ID:", id); // Check the value of id in the console
+    const path = `EdisonDaquilema/${id}`;
+    
 
     // Función para llenar los campos del formulario al editar un doctor
     window.editarDoctor = function (id) {
+        
         doctorIdToEdit = id;
-        const databaseRef = ref(database, EdisonDaquilema/${id});
+        const databaseRef = ref(database, 'EdisonDaquilema/${id}');
         onValue(databaseRef, (snapshot) => {
             const doctor = snapshot.val();
             if (doctor) {
@@ -203,7 +223,7 @@
     window.eliminarDoctor = function (id) {
         const confirmacion = confirm("¿Está seguro de eliminar este doctor?");
         if (confirmacion) {
-            remove(ref(database, EdisonDaquilema/${id}));
+            remove(ref(database, "EdisonDaquilema/${id}"));
             // Limpiar el formulario después de eliminar un doctor
             limpiarFormulario();
             doctorIdToEdit = null;
