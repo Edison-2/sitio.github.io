@@ -214,8 +214,9 @@ button:hover {
     }
 
     window.eliminarReserva = function (id) {
-        const reservationsRef = database.ref('reservasCampamento/' + id);
+        const reservationsRef = database.ref('reservasCampamento/' + key);
         reservationsRef.remove();
+
 
     }
 }
