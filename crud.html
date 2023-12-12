@@ -57,49 +57,44 @@ button:hover {
 }
  
 </style>
-    <div class="container">
-        <h1>Registro de paciente</h1>
-        <form id="crud-form">
-            <label for="id">ID:</label>
-            <input type="text" id="id">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre">
-            <label for="edad">Edad:</label>
-            <input type="number" id="edad">
-            <label for="email">Email:</label>
-            <input type="email" id="email">
-            <label for="telefono">Teléfono:</label>
-            <input type="tel" id="telefono">
-            <div class="row">
-                <div class="col-md-12">
-                    
-                        <button type="button" onclick="crearRegistro()">Crear</button>                    
-                        <button type="button" onclick="leerRegistros()">leer</button>                    
-                        <button type="button" onclick="crearRegistro()">actualizar</button>
-                </div>
-
-            </div>
-            
-        </form>
-        <div>
-            <table id="table-data">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Edad</th>
-                        <th>Email</th>
-                        <th>Teléfono</th>
-                        <th> Acciones</th>
-                        
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    <!-- Aquí se mostrarán los datos -->
-                </tbody>
-            </table>
+<div class="container">
+    <form id="crud-form">
+        <label for="id">ID:</label>
+        <input type="text" id="id">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre">
+        <label for="edad">Edad:</label>
+        <input type="number" id="edad">
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono">
+        <label for="enfermedad">Enfermedad:</label>
+        <input type="text" id="enfermedad">
+        <label for="sintomas">Síntomas:</label>
+        <textarea id="sintomas"></textarea>
+        
+        <div class="button-container">
+            <button type="button" onclick="crearRegistro()">Crear</button>
+            <button type="button" onclick="leerRegistros()">Mostrar Datos</button>
         </div>
-    </div>
+    </form>
+
+    <table id="table-data">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Edad</th>
+                <th>Teléfono</th>
+                <th>Enfermedad</th>
+                <th>Síntomas</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- Aquí se mostrarán los datos -->
+        </tbody>
+    </table>
+</div>
     <script type="module">
         // Importa las funciones que necesitas de los SDK que estás utilizando
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
@@ -121,97 +116,101 @@ button:hover {
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        window.crearRegistro = function () {
-            const id = document.getElementById("id").value;
-            const nombre = document.getElementById("nombre").value;
-            const edad = document.getElementById("edad").value;
-            const email = document.getElementById("email").value;
-            const telefono = document.getElementById("telefono").value;
-           
-            console.log(id,nombre, edad, email, telefono);
-            
-            push(
-                ref(database, 'EdisonDaquilema'),
-                {
-                    id:id,
-                    name: nombre,
-                    age: edad,
-                    email: email,
-                    phone: telefono
-                } 
-            );
-        }
-        window.leer = function () {
-            const databaseRef = ref(database, 'EdisonDaquilema');
-            onValue(databaseRef, (snapshot) => {
-                const data = snapshot.val();
-                console.log("Registros:", data);
-            });
-        }
-        
-       
-            window.leerRegistros = function () {
+        window.onload = function() {
+    // Configurar Firebase (ya proporcionado en ejemplos anteriores)
+    // ...
+
+    window.leerRegistros = function () {
         const tableBody = document.getElementById('table-body');
         tableBody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
 
-        const databaseRef = ref(database, 'EdisonDaquilema');
+        const databaseRef = ref(database, 'DaquilemaEdison');
         onValue(databaseRef, (snapshot) => {
             snapshot.forEach((childSnapshot) => {
                 const data = childSnapshot.val();
-                const { name, age, email, phone } = data;
+                const { id, nombre, edad, telefono, enfermedad, sintomas } = data;
 
-                const newRow = crearFilaTabla(childSnapshot.key, name, age, email, phone);
+                const newRow = crearFilaTabla(childSnapshot.key, id, nombre, edad, telefono, enfermedad, sintomas);
                 tableBody.appendChild(newRow);
             });
         });
     }
 
-    function crearFilaTabla(id, name, age, email, phone) {
+    function crearFilaTabla(key, id, nombre, edad, telefono, enfermedad, sintomas) {
         const newRow = document.createElement('tr');
         newRow.innerHTML = `
             <td>${id}</td>
-            <td>${name}</td>
-            <td>${age}</td>
-            <td>${email}</td>
-            <td>${phone}</td>
-            <td><button onclick="eliminarRegistro('${id}')">Eliminar</button></td>
-            <td><button onclick="prepararActualizacion('${id}', '${name}', '${age}', '${email}', '${phone}')">Actualizar</button></td>
+            <td>${nombre}</td>
+            <td>${edad}</td>
+            <td>${telefono}</td>
+            <td>${enfermedad}</td>
+            <td>${sintomas}</td>
+            <td>
+                <button onclick="eliminarRegistro('${key}')">Eliminar</button>
+                <button onclick="prepararActualizacion('${key}', '${id}', '${nombre}', '${edad}', '${telefono}', '${enfermedad}', '${sintomas}')">Actualizar</button>
+            </td>
         `;
         return newRow;
     }
 
-    window.eliminarRegistro = function (id) {
-        const databaseRef = ref(database, 'EdisonDaquilema/' + id);
-        remove(databaseRef);
-    }
-
-    window.prepararActualizacion = function (id, name, age, email, phone) {
-        document.getElementById('id').value = id;
-        document.getElementById('nombre').value = name;
-        document.getElementById('edad').value = age;
-        document.getElementById('email').value = email;
-        document.getElementById('telefono').value = phone;
-    }
-
-    window.actualizarRegistro = function () {
+    window.crearRegistro = function () {
         const id = document.getElementById('id').value;
         const nombre = document.getElementById('nombre').value;
         const edad = document.getElementById('edad').value;
-        const email = document.getElementById('email').value;
         const telefono = document.getElementById('telefono').value;
+        const enfermedad = document.getElementById('enfermedad').value;
+        const sintomas = document.getElementById('sintomas').value;
 
-        const databaseRef = ref(database, 'EdisonDaquilema/' + id);
-        update(databaseRef, {
-            name: nombre,
-            age: edad,
-            email: email,
-            phone: telefono
+        const databaseRef = ref(database, 'DaquilemaEdison');
+        push(databaseRef, {
+            id: id,
+            nombre: nombre,
+            edad: edad,
+            telefono: telefono,
+            enfermedad: enfermedad,
+            sintomas: sintomas
         });
     }
 
+    window.prepararActualizacion = function (key, id, nombre, edad, telefono, enfermedad, sintomas) {
+        document.getElementById('id').value = id;
+        document.getElementById('nombre').value = nombre;
+        document.getElementById('edad').value = edad;
+        document.getElementById('telefono').value = telefono;
+        document.getElementById('enfermedad').value = enfermedad;
+        document.getElementById('sintomas').value = sintomas;
 
+        // Guardar el key (ID del registro) en un atributo del botón Actualizar
+        const botonActualizar = document.getElementById('actualizarBtn');
+        botonActualizar.setAttribute('data-key', key);
+    }
 
-// Resto de tu código para crear, actualizar y eliminar registros
+    window.actualizarRegistro = function () {
+        const key = document.getElementById('actualizarBtn').getAttribute('data-key');
+        const id = document.getElementById('id').value;
+        const nombre = document.getElementById('nombre').value;
+        const edad = document.getElementById('edad').value;
+        const telefono = document.getElementById('telefono').value;
+        const enfermedad = document.getElementById('enfermedad').value;
+        const sintomas = document.getElementById('sintomas').value;
+
+        const databaseRef = ref(database, 'DaquilemaEdison' + key);
+        update(databaseRef, {
+            id: id,
+            nombre: nombre,
+            edad: edad,
+            telefono: telefono,
+            enfermedad: enfermedad,
+            sintomas: sintomas
+        });
+    }
+
+    window.eliminarRegistro = function (key) {
+        const databaseRef = ref(database, 'DaquilemaEdison');
+        remove(child(databaseRef, key));
+    }
+}
+
 
       </script>
 </body>
