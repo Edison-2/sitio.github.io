@@ -1,25 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro</title>
-  <div></div>
-  <header>
-    <h1>Campamento de Aventura</h1>
-    
-    <nav>
-        <ul>
-          <li><a href="form.html">Saludo</a></li>
-          <li><a href="#registro">Registros</a></li>
-            <li><a href="#informacion">Información</a></li>
-            <li><a href="#galeria">Galería</a></li>
-            <li><a href="#contacto">Contactanos</a></li>
-            <li> <a href="crud.html">Reserva</a></li>
-        </ul>
-    </nav>
-</header>
-
   <!-- Agrega Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
@@ -33,6 +17,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column; /* Cambia la dirección del eje principal a vertical */
     }
 
     /* Estilo para el contenedor cuadrado dividido en dos partes */
@@ -41,59 +26,104 @@
       border-radius: 10px;
       padding: 20px;
       max-width: 600px;
+      margin-top: 20px; /* Agrega espacio entre el menú y los cuadros */
     }
+
     header {
-        background-color: #333;
-        color: #fff;
-        padding: 20px;
-        text-align: center;
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      width: 100%; /* Ocupa todo el ancho */
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    /* Estilos específicos para los campos y botón */
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 5px;
+    }
+
+    input,
+    button {
+      margin-bottom: 10px;
+      padding: 5px;
     }
   </style>
-
-
 </head>
 <body>
+  <header>
+    <h1>Campamento de Aventura</h1>
+    <nav>
+      <ul>
+        <li><a href="form.html">Saludo</a></li>
+        <li><a href="#registro">Registros</a></li>
+        <li><a href="#informacion">Información</a></li>
+        <li><a href="#galeria">Galería</a></li>
+        <li><a href="#contacto">Contactanos</a></li>
+        <li><a href="crud.html">Reserva</a></li>
+      </ul>
+    </nav>
+  </header>
+
   <div class="container">
     <div class="row">
       <div class="col-md-6">
         <form id="doctorForm">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required>
-    
-            <label for="especialidad">Especialidad:</label>
-            <input type="text" id="especialidad" name="especialidad" required>
-    
-            <label for="direccion">Dirección:</label>
-            <input type="text" id="direccion" name="direccion">
-    
-            <label for="telefono">Teléfono:</label>
-            <input type="tel" id="telefono" name="telefono">
-    
-            <label for="correo">Correo Electrónico:</label>
-            <input type="email" id="correo" name="correo">
-    
-            <button type="button" onclick="crearDoctor()">Registrar</button>
-        </form>
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" name="nombre" required>
 
+          <label for="especialidad">Especialidad:</label>
+          <input type="text" id="especialidad" name="especialidad" required>
+
+          <label for="direccion">Dirección:</label>
+          <input type="text" id="direccion" name="direccion">
+
+          <label for="telefono">Teléfono:</label>
+          <input type="tel" id="telefono" name="telefono">
+
+          <label for="correo">Correo Electrónico:</label>
+          <input type="email" id="correo" name="correo">
+
+          <button type="button" onclick="crearDoctor()">Registrar</button>
+        </form>
       </div>
       <div class="col-md-6">
         <table id="tablaDoctores">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Especialidad</th>
-                    <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <th>Correo Electrónico</th>
-                </tr>
-            </thead>
-            <tbody id="bodyTablaDoctores"></tbody>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Especialidad</th>
+              <th>Dirección</th>
+              <th>Teléfono</th>
+              <th>Correo Electrónico</th>
+            </tr>
+          </thead>
+          <tbody id="bodyTablaDoctores"></tbody>
         </table>
       </div>
     </div>
   </div>
-
-  <!-- Agrega Bootstrap JS (opcional, para funcionalidades adicionales) -->
+    <!-- Agrega Bootstrap JS (opcional, para funcionalidades adicionales) -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script type="module">
     // Importar las funciones necesarias desde los SDK que necesitas
@@ -269,6 +299,8 @@ window.editarDoctor = function (id) {
 </script>
 </body>
 </html>
+
+
 
 
 
