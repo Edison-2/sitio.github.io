@@ -130,7 +130,7 @@
         return /^[0-9]+$/.test(cadena);
     }
 
-    // Función para crear o actualizar un doctor
+    function crearDoctor() {
     window.crearDoctor = function () {
         const nombre = document.getElementById("nombre").value;
         const especialidad = document.getElementById("especialidad").value;
@@ -196,6 +196,27 @@
         // Actualizar la lista de doctores
         actualizarListaDoctores();
     }
+}
+function eliminarDoctor() {
+    window.eliminarDoctor = function (id) {
+        const confirmacion = confirm("¿Está seguro de eliminar este doctor?");
+        if (confirmacion) {
+            remove(ref(database, "EdisonDaquilema/${id}"));
+            // Limpiar el formulario después de eliminar un doctor
+            limpiarFormulario();
+            doctorIdToEdit = null;
+            // Cambiar el texto del botón de nuevo a "Registrar"
+            document.querySelector("button").innerText = "Registrar";
+            // Actualizar la lista de doctores
+            actualizarListaDoctores();
+        }
+    }
+}
+function crearDoctor() {
+    // Function implementation
+}
+    // Función para crear o actualizar un doctor
+    
     console.log("ID:", id); // Check the value of id in the console
     const path = `EdisonDaquilema/${id}`;
     
@@ -220,19 +241,7 @@
     }
 
     // Función para eliminar un doctor
-    window.eliminarDoctor = function (id) {
-        const confirmacion = confirm("¿Está seguro de eliminar este doctor?");
-        if (confirmacion) {
-            remove(ref(database, "EdisonDaquilema/${id}"));
-            // Limpiar el formulario después de eliminar un doctor
-            limpiarFormulario();
-            doctorIdToEdit = null;
-            // Cambiar el texto del botón de nuevo a "Registrar"
-            document.querySelector("button").innerText = "Registrar";
-            // Actualizar la lista de doctores
-            actualizarListaDoctores();
-        }
-    }
+    
 
     // Función para resetear el formulario
     function limpiarFormulario() {
