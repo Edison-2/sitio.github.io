@@ -58,49 +58,50 @@ button:hover {
  
 </style>
 <div class="container">
-        <form id="crud-form">
-            <label for="id">ID de reserva:</label>
-            <input type="text" id="id">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre">
-            <label for="fecha">Fecha de reserva:</label>
-            <input type="date" id="fecha">
-            <label for="duracion">Duración (días):</label>
-            <input type="number" id="duracion">
-            <label for="tipo">Tipo de campamento:</label>
-            <select id="tipo">
-                <option value="Estándar">Estándar</option>
-                <option value="Premium">Premium</option>
-                <option value="Deluxe">Deluxe</option>
-            </select>
-            <label for="notas">Notas:</label>
-            <textarea id="notas"></textarea>
-            
-            <div class="button-container">
-                <button type="button" onclick="crearReserva()">Crear Reserva</button>
-                <button type="button" onclick="actualizarReserva()">Actualizar Reserva</button>
-                <button type="button" onclick="mostrarReservas()">Mostrar Reservas</button>
-                
-            </div>
-        </form>
+    <form id="crud-form">
+        <label for="id">ID de reserva:</label>
+        <input type="text" id="id">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre">
+        <label for="fecha">Fecha de reserva:</label>
+        <input type="date" id="fecha">
+        <label for="duracion">Duración (días):</label>
+        <input type="number" id="duracion">
+        <label for="tipo">Tipo de campamento:</label>
+        <select id="tipo">
+            <option value="Estándar">Estándar</option>
+            <option value="Premium">Premium</option>
+            <option value="Deluxe">Deluxe</option>
+        </select>
+        <label for="notas">Notas:</label>
+        <textarea id="notas"></textarea>
 
-        <table id="table-data">
-            <thead>
-                <tr>
-                    <th>ID de reserva</th>
-                    <th>Nombre</th>
-                    <th>Fecha de reserva</th>
-                    <th>Duración (días)</th>
-                    <th>Tipo de campamento</th>
-                    <th>Notas</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                <!-- Aquí se mostrarán las reservas -->
-            </tbody>
-        </table>
-    </div>
+        <!-- Botón para guardar cambios -->
+        <button id="guardarCambios" style="display: none;" onclick="guardarCambios()">Guardar Cambios</button>
+        
+        <div class="button-container">
+            <button type="button" onclick="crearReserva()">Crear Reserva</button>
+            <button type="button" onclick="mostrarReservas()">Mostrar Reservas</button>
+        </div>
+    </form>
+
+    <table id="table-data">
+        <thead>
+            <tr>
+                <th>ID de reserva</th>
+                <th>Nombre</th>
+                <th>Fecha de reserva</th>
+                <th>Duración (días)</th>
+                <th>Tipo de campamento</th>
+                <th>Notas</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- Aquí se mostrarán las reservas -->
+        </tbody>
+    </table>
+</div>
     <script type="module">
         // Importa las funciones que necesitas de los SDK que estás utilizando
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
