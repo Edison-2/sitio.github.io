@@ -199,7 +199,7 @@
     // Función para llenar los campos del formulario al editar un doctor
     window.editarDoctor = function (id) {
         doctorIdToEdit = id;
-        const databaseRef = ref(database,"EdisonDaquilema/${id}");
+        const databaseRef = ref(database, "EdisonDaquilema/${id}");
         onValue(databaseRef, (snapshot) => {
             const doctor = snapshot.val();
             if (doctor) {
