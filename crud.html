@@ -214,7 +214,7 @@
     window.eliminarDoctor = function (id) {
         const confirmacion = confirm("¿Está seguro de eliminar este doctor?");
         if (confirmacion) {
-            remove(ref(database, 'EdisonDaquilema/${id}'));
+            remove(ref(database, "EdisonDaquilema/${id}"));
             // Limpiar el formulario después de eliminar un doctor
             limpiarFormulario();
             doctorIdToEdit = null;
