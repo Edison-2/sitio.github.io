@@ -189,6 +189,9 @@ button:hover {
         // Guardar el key (ID de la reserva) en un atributo del botón Editar
         const botonEditar = document.getElementById('editarBtn');
         botonEditar.setAttribute('data-key', key);
+
+        // Mostrar el botón para guardar cambios
+        document.getElementById('guardarCambios').style.display = 'block';
     }
 
     window.actualizarReserva = function () {
@@ -209,11 +212,19 @@ button:hover {
             tipo: tipo,
             notas: notas
         });
+
+        // Ocultar el botón después de guardar los cambios
+        document.getElementById('guardarCambios').style.display = 'none';
     }
 
     window.eliminarReserva = function (key) {
         const databaseRef = ref(database, 'reservasCampamento');
         remove(child(databaseRef, key));
+    }
+
+    window.guardarCambios = function () {
+        // Llamada a la función de actualizarReserva existente
+        actualizarReserva();
     }
 }
 
