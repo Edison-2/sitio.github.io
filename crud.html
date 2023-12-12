@@ -193,23 +193,50 @@
         actualizarListaDoctores();
     }
 
-    // Función para llenar los campos del formulario al editar un doctor
-    window.editarDoctor = function (id) {
-        doctorIdToEdit = id;
-        const databaseRef = ref(database, 'EdisonDaquilema/${id}');
-        onValue(databaseRef, (snapshot) => {
-            const doctor = snapshot.val();
-            if (doctor) {
-                document.getElementById("nombre").value = doctor.nombre || "";
-                document.getElementById("especialidad").value = doctor.especialidad || "";
-                document.getElementById("direccion").value = doctor.direccion || "";
-                document.getElementById("telefono").value = doctor.telefono || "";
-                document.getElementById("correo").value = doctor.correo || "";
-                // Cambiar el texto del botón a "Actualizar"
-                document.querySelector("button").innerText = "Actualizar";
-            }
-        });
-    }
+function actualizarListaDoctores() {
+    const bodyTablaDoctores = document.getElementById("bodyTablaDoctores");
+    bodyTablaDoctores.innerHTML = "";
+
+    const databaseRef = ref(database, 'EdisonDaquilema');
+    onValue(databaseRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            Object.keys(data).forEach((doctorId) => {
+                const doctor = data[doctorId];
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${doctor.nombre}</td>
+                    <td>${doctor.especialidad}</td>
+                    <td>${doctor.direccion || ""}</td>
+                    <td>${doctor.telefono || ""}</td>
+                    <td>${doctor.correo || ""}</td>
+                    <td>
+                        <button onclick="editarDoctor('${doctorId}')">Editar</button>
+                        <button onclick="eliminarDoctor('${doctorId}')">Eliminar</button>
+                    </td>
+                `;
+                bodyTablaDoctores.appendChild(row);
+            });
+        }
+    });
+}
+
+window.editarDoctor = function (id) {
+    doctorIdToEdit = id;
+    const databaseRef = ref(database, `EdisonDaquilema/${id}`);
+    onValue(databaseRef, (snapshot) => {
+        const doctor = snapshot.val();
+        if (doctor) {
+            document.getElementById("nombre").value = doctor.nombre || "";
+            document.getElementById("especialidad").value = doctor.especialidad || "";
+            document.getElementById("direccion").value = doctor.direccion || "";
+            document.getElementById("telefono").value = doctor.telefono || "";
+            document.getElementById("correo").value = doctor.correo || "";
+            // Cambiar el texto del botón a "Actualizar"
+            document.querySelector("button").innerText = "Actualizar";
+        }
+    });
+}
 
     // Función para eliminar un doctor
     // Assuming you have Firebase initialized and database reference set up
@@ -235,33 +262,7 @@
     }
 
     // Función para renderizar la lista de doctores en una tabla
-    function actualizarListaDoctores() {
-        const bodyTablaDoctores = document.getElementById("bodyTablaDoctores");
-        bodyTablaDoctores.innerHTML = "";
-
-        const databaseRef = ref(database, 'EdisonDaquilema');
-        onValue(databaseRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                Object.keys(data).forEach((doctorId) => {
-                    const doctor = data[doctorId];
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${doctor.nombre}</td>
-                        <td>${doctor.especialidad}</td>
-                        <td>${doctor.direccion || ""}</td>
-                        <td>${doctor.telefono || ""}</td>
-                        <td>${doctor.correo || ""}</td>
-                        <td>
-                            <button onclick="editarDoctor('${doctorId}')">Editar</button>
-                            <button onclick="eliminarDoctor('${doctorId}')">Eliminar</button>
-                        </td>
-                    `;
-                    bodyTablaDoctores.appendChild(row);
-                });
-            }
-        });
-    }
+    
 
     // Cargar la lista inicial de doctores
     actualizarListaDoctores();
