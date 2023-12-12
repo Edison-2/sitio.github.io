@@ -77,10 +77,7 @@ button:hover {
         <textarea id="notas"></textarea>
 
         <!-- Botón para guardar cambios -->
-        <button id="editarBtn">Editar</button>
 
-        <button id="guardarCambios" style="display: none;" onclick="guardarCambios()">Guardar Cambios</button>
-        
         <div class="button-container">
             <button type="button" onclick="crearReserva()">Crear Reserva</button>
             <button type="button" onclick="mostrarReservas()">Mostrar Reservas</button>
@@ -102,6 +99,7 @@ button:hover {
         <tbody id="table-body">
             <!-- Aquí se mostrarán las reservas -->
         </tbody>
+        <button id="guardarCambios" style="display: none;" onclick="guardarCambios()">Guardar Cambios</button>
     </table>
 </div>
     <script type="module">
