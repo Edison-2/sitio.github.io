@@ -194,7 +194,7 @@
 
             if (doctorIdToEdit) {
                 // Actualizar doctor existente
-                update(ref(database, NaimCedeno/${doctorIdToEdit}), {
+                update(ref(database, 'EdisonDaquilema/${doctorIdToEdit}'), {
                     nombre: nombre,
                     especialidad: especialidad,
                     direccion: direccion,
@@ -206,7 +206,7 @@
                 document.querySelector("button").innerText = "Registrar";
             } else {
                 // Crear un nuevo doctor
-                push(ref(database, 'NaimCedeno'), {
+                push(ref(database, 'EdisonDaquilema'), {
                     nombre: nombre,
                     especialidad: especialidad,
                     direccion: direccion,
@@ -224,7 +224,7 @@
         // Función para llenar los campos del formulario al editar un doctor
         window.editarDoctor = function (id) {
             doctorIdToEdit = id;
-            const databaseRef = ref(database, NaimCedeno/${id});
+            const databaseRef = ref(database, 'EdisonDaquilema/${id}');
             onValue(databaseRef, (snapshot) => {
                 const doctor = snapshot.val();
                 if (doctor) {
@@ -243,7 +243,7 @@
         window.eliminarDoctor = function (id) {
             const confirmacion = confirm("¿Está seguro de eliminar este doctor?");
             if (confirmacion) {
-                remove(ref(database, NaimCedeno/${id}));
+                remove(ref(database, 'EdisonDaquilema/${id}'));
                 // Limpiar el formulario después de eliminar un doctor
                 limpiarFormulario();
                 doctorIdToEdit = null;
@@ -264,7 +264,7 @@
             const bodyTablaDoctores = document.getElementById("bodyTablaDoctores");
             bodyTablaDoctores.innerHTML = "";
 
-            const databaseRef = ref(database, 'NaimCedeno');
+            const databaseRef = ref(database, 'EdisonDaquilema');
             onValue(databaseRef, (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
