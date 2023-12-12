@@ -1,226 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Doctor</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #9abaff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #000000;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 80%; /* Cambiado el ancho del formulario */
+            max-width: 400px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #15016d;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin-top: 50px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #000000;
+            color: white;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+
+        @media only screen and (max-width: 600px) {
+            form {
+                width: 90%; /* Ancho del formulario al 90% en pantallas pequeñas */
+            }
+            table {
+                width: 90%; /* Ancho de la tabla al 90% en pantallas pequeñas */
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <style> 
-    /* Estilos para el contenedor principal */
-body {
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #7fffd4; /* Fondo turquesa */
-}
+    <h1>Registro de Doctor11</h1>
 
-.container {
-    background-color: rgba(255, 255, 255, 0.8); /* Cuadrado opaco */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
-}
-
-/* Estilos para el formulario */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-label {
-    font-weight: bold;
-}
-
-input {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-button {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: #4CAF50;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
-}
- 
-</style>
-<div class="container">
-    <form id="crud-form">
-        <label for="id">ID de reserva:</label>
-        <input type="text" id="id">
+    <!-- Formulario de Registro -->
+    <form id="doctorForm">
         <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre">
-        <label for="fecha">Fecha de reserva:</label>
-        <input type="date" id="fecha">
-        <label for="duracion">Duración (días):</label>
-        <input type="number" id="duracion">
-        <label for="tipo">Tipo de campamento:</label>
-        <select id="tipo">
-            <option value="Estándar">Estándar</option>
-            <option value="Premium">Premium</option>
-            <option value="Deluxe">Deluxe</option>
-        </select>
-        <label for="notas">Notas:</label>
-        <textarea id="notas"></textarea>
+        <input type="text" id="nombre" name="nombre" required>
 
-        <!-- Botón para guardar cambios -->
+        <label for="especialidad">Especialidad:</label>
+        <input type="text" id="especialidad" name="especialidad" required>
 
-        <div class="button-container">
-            <button type="button" onclick="crearReserva()">Crear Reserva</button>
-            <button type="button" onclick="mostrarReservas()">Mostrar Reservas</button>
-        </div>
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" name="direccion">
+
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono">
+
+        <label for="correo">Correo Electrónico:</label>
+        <input type="email" id="correo" name="correo">
+
+        <button type="button" onclick="crearDoctor()">Registrar</button>
     </form>
 
-    <table id="table-data">
+    <!-- Lista de Doctores en una tabla -->
+    <table id="tablaDoctores">
         <thead>
             <tr>
-                <th>ID de reserva</th>
                 <th>Nombre</th>
-                <th>Fecha de reserva</th>
-                <th>Duración (días)</th>
-                <th>Tipo de campamento</th>
-                <th>Notas</th>
-                <th>Acciones</th>
+                <th>Especialidad</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Correo Electrónico</th>
             </tr>
         </thead>
-        <tbody id="table-body">
-            <!-- Aquí se mostrarán las reservas -->
-        </tbody>
-        <button id="guardarCambios" style="display: none;" onclick="guardarCambios()">Guardar Cambios</button>
+        <tbody id="bodyTablaDoctores"></tbody>
     </table>
-</div>
+
     <script type="module">
-        // Importa las funciones que necesitas de los SDK que estás utilizando
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
-      
-        // Configuración de tu aplicación Firebase
+        // Importar las funciones necesarias desde los SDK que necesitas
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // Tu configuración de Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyDRmHSHN1v5yCTgQRiP-u_zXVpg2S8HkeY",
-            authDomain: "septimo-utc.firebaseapp.com",
-            databaseURL: "https://septimo-utc-default-rtdb.firebaseio.com",
-            projectId: "septimo-utc",
-            storageBucket: "septimo-utc.appspot.com",
-            messagingSenderId: "992144357930",
-            appId: "1:992144357930:web:f5fde41131d4504c8ca153"
+            apiKey: "AIzaSyBMJsVpnbOwVOiVNbTZScZdet9qlGigDL0",
+            authDomain: "conexion-8ec0d.firebaseapp.com",
+            databaseURL: "https://conexion-8ec0d-default-rtdb.firebaseio.com",
+            projectId: "conexion-8ec0d",
+            storageBucket: "conexion-8ec0d.appspot.com",
+            messagingSenderId: "679910299749",
+            appId: "1:679910299749:web:9800b464879628b4850e8c"
         };
 
-      
-        // Inicializa Firebase
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-        // Firebase configuration and initialization
-// ...
+        let doctorIdToEdit = null;
 
-// Función para crear registro
-window.crearRegistro = function () {
-    // Obtener los valores del formulario
-    const id = document.getElementById("id").value;
-    const nombre = document.getElementById("nombre").value;
-    const fecha = document.getElementById("fecha").value;
-    const duracion = document.getElementById("duracion").value;
-    const tipo = document.getElementById("tipo").value;
-    const notas = document.getElementById("notas").value;
+        // Función para validar que la cadena contenga solo letras
+        function contieneSoloLetras(cadena) {
+            return /^[a-zA-Z\s]+$/.test(cadena);
+        }
 
-    // Crear referencia y agregar el nuevo registro
-    const reservationsRef = ref(database, 'reservasCampamento');
-    push(reservationsRef, {
-        id: id,
-        nombre: nombre,
-        fecha: fecha,
-        duracion: duracion,
-        tipo: tipo,
-        notas: notas
-    });
-}
+        // Función para validar que la cadena contenga solo números
+        function contieneSoloNumeros(cadena) {
+            return /^[0-9]+$/.test(cadena);
+        }
 
-// Función para leer registros y mostrarlos en una tabla
-window.mostrarRegistros = function () {
-    const tableBody = document.querySelector('#table-data tbody');
-    tableBody.innerHTML = '';
+        // Función para crear o actualizar un doctor
+        window.crearDoctor = function () {
+            const nombre = document.getElementById("nombre").value;
+            const especialidad = document.getElementById("especialidad").value;
+            const direccion = document.getElementById("direccion").value;
+            const telefono = document.getElementById("telefono").value;
+            const correo = document.getElementById("correo").value;
 
-    const databaseRef = ref(database, 'reservasCampamento');
-    onValue(databaseRef, (snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-            const data = childSnapshot.val();
-            const { id, nombre, fecha, duracion, tipo, notas } = data;
+            // Verificar si los campos obligatorios están llenos
+            if (!nombre || !especialidad) {
+                alert("Por favor, complete los campos obligatorios");
+                return;
+            }
 
-            const newRow = tableBody.insertRow();
-            newRow.innerHTML = `
-                <td>${id}</td>
-                <td>${nombre}</td>
-                <td>${fecha}</td>
-                <td>${duracion}</td>
-                <td>${tipo}</td>
-                <td>${notas}</td>
-                <td>
-                    <button onclick="eliminarRegistro('${childSnapshot.key}')">Eliminar</button>
-                    <button onclick="prepararEdicion('${childSnapshot.key}', '${id}', '${nombre}', '${fecha}', '${duracion}', '${tipo}', '${notas}')">Editar</button>
-                </td>
-            `;
-        });
-    });
-}
+            // Validar que el nombre contenga solo letras
+            if (!contieneSoloLetras(nombre)) {
+                alert("El campo 'Nombre' debe contener solo letras.");
+                return;
+            }
 
-// Función para preparar la edición de un registro
-window.prepararEdicion = function (key, id, nombre, fecha, duracion, tipo, notas) {
-    document.getElementById('id').value = id;
-    document.getElementById('nombre').value = nombre;
-    document.getElementById('fecha').value = fecha;
-    document.getElementById('duracion').value = duracion;
-    document.getElementById('tipo').value = tipo;
-    document.getElementById('notas').value = notas;
+            // Validar que la especialidad contenga solo letras
+            if (!contieneSoloLetras(especialidad)) {
+                alert("El campo 'Especialidad' debe contener solo letras.");
+                return;
+            }
 
-    const botonGuardarCambios = document.getElementById('guardarCambios');
-    botonGuardarCambios.setAttribute('data-key', key);
-    botonGuardarCambios.style.display = 'block';
-}
+            // Validar que el telefono contenga solo números
+            if (telefono && !contieneSoloNumeros(telefono)) {
+                alert("El campo 'Teléfono' debe contener solo números.");
+                return;
+            }
 
-// Función para guardar cambios de un registro editado
-window.guardarCambios = function () {
-    const key = document.getElementById('guardarCambios').getAttribute('data-key');
-    const id = document.getElementById('id').value;
-    const nombre = document.getElementById('nombre').value;
-    const fecha = document.getElementById('fecha').value;
-    const duracion = document.getElementById('duracion').value;
-    const tipo = document.getElementById('tipo').value;
-    const notas = document.getElementById('notas').value;
+            // Validar que el correo tenga un formato válido
+            if (correo && !/\S+@\S+\.\S+/.test(correo)) {
+                alert("Ingrese un correo electrónico válido.");
+                return;
+            }
 
-    const updates = {
-        id: id,
-        nombre: nombre,
-        fecha: fecha,
-        duracion: duracion,
-        tipo: tipo,
-        notas: notas
-    };
+            if (doctorIdToEdit) {
+                // Actualizar doctor existente
+                update(ref(database, 'EdisonDaquilema'/${doctorIdToEdit}), {
+                    nombre: nombre,
+                    especialidad: especialidad,
+                    direccion: direccion,
+                    telefono: telefono,
+                    correo: correo
+                });
+                doctorIdToEdit = null;
+                // Cambiar el texto del botón de nuevo a "Registrar"
+                document.querySelector("button").innerText = "Registrar";
+            } else {
+                // Crear un nuevo doctor
+                push(ref(database, 'EdisonDaquilema'), {
+                    nombre: nombre,
+                    especialidad: especialidad,
+                    direccion: direccion,
+                    telefono: telefono,
+                    correo: correo
+                });
+            }
 
-    update(ref(database, `reservasCampamento/${key}`), updates);
-    document.getElementById('guardarCambios').style.display = 'none';
-}
+            // Limpiar el formulario después de crear o actualizar un doctor
+            limpiarFormulario();
+            // Actualizar la lista de doctores
+            actualizarListaDoctores();
+        }
 
-// Función para eliminar un registro por su clave (key)
-window.eliminarRegistro = function (key) {
-    remove(ref(database, `reservasCampamento/${key}`));
-}
+        // Función para llenar los campos del formulario al editar un doctor
+        window.editarDoctor = function (id) {
+            doctorIdToEdit = id;
+            const databaseRef = ref(database, 'EdisonDaquilema'/${id});
+            onValue(databaseRef, (snapshot) => {
+                const doctor = snapshot.val();
+                if (doctor) {
+                    document.getElementById("nombre").value = doctor.nombre || "";
+                    document.getElementById("especialidad").value = doctor.especialidad || "";
+                    document.getElementById("direccion").value = doctor.direccion || "";
+                    document.getElementById("telefono").value = doctor.telefono || "";
+                    document.getElementById("correo").value = doctor.correo || "";
+                    // Cambiar el texto del botón a "Actualizar"
+                    document.querySelector("button").innerText = "Actualizar";
+                }
+            });
+        }
 
-           
+        // Función para eliminar un doctor
+        window.eliminarDoctor = function (id) {
+            const confirmacion = confirm("¿Está seguro de eliminar este doctor?");
+            if (confirmacion) {
+                remove(ref(database, 'EdisonDaquilema'/${id}));
+                // Limpiar el formulario después de eliminar un doctor
+                limpiarFormulario();
+                doctorIdToEdit = null;
+                // Cambiar el texto del botón de nuevo a "Registrar"
+                document.querySelector("button").innerText = "Registrar";
+                // Actualizar la lista de doctores
+                actualizarListaDoctores();
+            }
+        }
 
-      </script>
+        // Función para resetear el formulario
+        function limpiarFormulario() {
+            document.getElementById("doctorForm").reset();
+        }
+
+        // Función para renderizar la lista de doctores en una tabla
+        function actualizarListaDoctores() {
+            const bodyTablaDoctores = document.getElementById("bodyTablaDoctores");
+            bodyTablaDoctores.innerHTML = "";
+
+            const databaseRef = ref(database, 'EdisonDaquilema');
+            onValue(databaseRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    Object.keys(data).forEach((doctorId) => {
+                        const doctor = data[doctorId];
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${doctor.nombre}</td>
+                            <td>${doctor.especialidad}</td>
+                            <td>${doctor.direccion || ""}</td>
+                            <td>${doctor.telefono || ""}</td>
+                            <td>${doctor.correo || ""}</td>
+                            <td>
+                                <button onclick="editarDoctor('${doctorId}')">Editar</button>
+                                <button onclick="eliminarDoctor('${doctorId}')">Eliminar</button>
+                            </td>
+                        `;
+                        bodyTablaDoctores.appendChild(row);
+                    });
+                }
+            });
+        }
+
+        // Cargar la lista inicial de doctores
+        actualizarListaDoctores();
+    </script>
 </body>
+
 </html>
-
-
