@@ -195,27 +195,27 @@
         }
 
         if (doctorIdToEdit) {
-            // Actualizar doctor existente
-            update(ref(database, 'EdisonDaquilema/${doctorIdToEdit}'), {
-                nombre: nombre,
-                especialidad: especialidad,
-                direccion: direccion,
-                telefono: telefono,
-                correo: correo
-            });
-            doctorIdToEdit = null;
-            // Cambiar el texto del botón de nuevo a "Registrar"
-            document.querySelector("button").innerText = "Registrar";
-        } else {
-            // Crear un nuevo doctor
-            push(ref(database, 'EdisonDaquilema'), {
-                nombre: nombre,
-                especialidad: especialidad,
-                direccion: direccion,
-                telefono: telefono,
-                correo: correo
-            });
-        }
+    // Actualizar doctor existente
+    update(ref(database, `EdisonDaquilema/${doctorIdToEdit}`), {
+        nombre: nombre,
+        especialidad: especialidad,
+        direccion: direccion,
+        telefono: telefono,
+        correo: correo
+    });
+    doctorIdToEdit = null;
+    // Cambiar el texto del botón de nuevo a "Registrar"
+    document.querySelector("button").innerText = "Registrar";
+} else {
+    // Crear un nuevo doctor
+    push(ref(database, 'EdisonDaquilema'), {
+        nombre: nombre,
+        especialidad: especialidad,
+        direccion: direccion,
+        telefono: telefono,
+        correo: correo
+    });
+}
 
         // Limpiar el formulario después de crear o actualizar un doctor
         limpiarFormulario();
