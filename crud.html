@@ -212,11 +212,13 @@
     }
 
     // Función para eliminar un doctor
+    // Assuming you have Firebase initialized and database reference set up
+
+// Function to delete a doctor
     window.eliminarDoctor = function (id) {
         const confirmacion = confirm("¿Está seguro de eliminar este doctor?");
         if (confirmacion) {
-            remove(ref(database, "EdisonDaquilema/${id}"));
-            // Limpiar el formulario después de eliminar un doctor
+            remove(ref(database, `EdisonDaquilema/${id}`));
             limpiarFormulario();
             doctorIdToEdit = null;
             // Cambiar el texto del botón de nuevo a "Registrar"
@@ -225,6 +227,7 @@
             actualizarListaDoctores();
         }
     }
+
 
     // Función para resetear el formulario
     function limpiarFormulario() {
