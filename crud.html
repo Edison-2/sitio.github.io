@@ -122,17 +122,22 @@ button:hover {
         // Inicializa Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-    // Crear reserva con ID personalizado
-window.crearReserva = function () {
-    const id = document.getElementById('id').value;
-    const nombre = document.getElementById('nombre').value;
-    const fecha = document.getElementById('fecha').value;
-    const duracion = document.getElementById('duracion').value;
-    const tipo = document.getElementById('tipo').value;
-    const notas = document.getElementById('notas').value;
+        // Firebase configuration and initialization
+// ...
 
-    const reservationsRef = database.ref('reservasCampamento');
-    reservationsRef.push({
+// Función para crear registro
+window.crearRegistro = function () {
+    // Obtener los valores del formulario
+    const id = document.getElementById("id").value;
+    const nombre = document.getElementById("nombre").value;
+    const fecha = document.getElementById("fecha").value;
+    const duracion = document.getElementById("duracion").value;
+    const tipo = document.getElementById("tipo").value;
+    const notas = document.getElementById("notas").value;
+
+    // Crear referencia y agregar el nuevo registro
+    const reservationsRef = ref(database, 'reservasCampamento');
+    push(reservationsRef, {
         id: id,
         nombre: nombre,
         fecha: fecha,
@@ -142,13 +147,13 @@ window.crearReserva = function () {
     });
 }
 
-// Mostrar reservas
-window.mostrarReservas = function () {
-    const tableBody = document.getElementById('table-data').getElementsByTagName('tbody')[0];
+// Función para leer registros y mostrarlos en una tabla
+window.mostrarRegistros = function () {
+    const tableBody = document.querySelector('#table-data tbody');
     tableBody.innerHTML = '';
 
-    const reservationsRef = database.ref('reservasCampamento');
-    reservationsRef.on('value', (snapshot) => {
+    const databaseRef = ref(database, 'reservasCampamento');
+    onValue(databaseRef, (snapshot) => {
         snapshot.forEach((childSnapshot) => {
             const data = childSnapshot.val();
             const { id, nombre, fecha, duracion, tipo, notas } = data;
@@ -162,16 +167,16 @@ window.mostrarReservas = function () {
                 <td>${tipo}</td>
                 <td>${notas}</td>
                 <td>
-                    <button onclick="eliminarReserva('${id}')">Eliminar</button>
-                    <button onclick="prepararEdicion('${id}', '${nombre}', '${fecha}', '${duracion}', '${tipo}', '${notas}')">Editar</button>
+                    <button onclick="eliminarRegistro('${childSnapshot.key}')">Eliminar</button>
+                    <button onclick="prepararEdicion('${childSnapshot.key}', '${id}', '${nombre}', '${fecha}', '${duracion}', '${tipo}', '${notas}')">Editar</button>
                 </td>
             `;
         });
     });
 }
 
-// Preparar edición
-window.prepararEdicion = function (id, nombre, fecha, duracion, tipo, notas) {
+// Función para preparar la edición de un registro
+window.prepararEdicion = function (key, id, nombre, fecha, duracion, tipo, notas) {
     document.getElementById('id').value = id;
     document.getElementById('nombre').value = nombre;
     document.getElementById('fecha').value = fecha;
@@ -179,56 +184,39 @@ window.prepararEdicion = function (id, nombre, fecha, duracion, tipo, notas) {
     document.getElementById('tipo').value = tipo;
     document.getElementById('notas').value = notas;
 
-    // Guardar el ID de la reserva en un atributo del botón Editar
     const botonGuardarCambios = document.getElementById('guardarCambios');
-    botonGuardarCambios.setAttribute('data-id', id);
-
-    // Mostrar el botón para guardar cambios
+    botonGuardarCambios.setAttribute('data-key', key);
     botonGuardarCambios.style.display = 'block';
 }
 
-// Guardar cambios
+// Función para guardar cambios de un registro editado
 window.guardarCambios = function () {
-    const id = document.getElementById('guardarCambios').getAttribute('data-id');
+    const key = document.getElementById('guardarCambios').getAttribute('data-key');
+    const id = document.getElementById('id').value;
     const nombre = document.getElementById('nombre').value;
     const fecha = document.getElementById('fecha').value;
     const duracion = document.getElementById('duracion').value;
     const tipo = document.getElementById('tipo').value;
     const notas = document.getElementById('notas').value;
 
-    const reservationsRef = database.ref('reservasCampamento').orderByChild('id').equalTo(id);
+    const updates = {
+        id: id,
+        nombre: nombre,
+        fecha: fecha,
+        duracion: duracion,
+        tipo: tipo,
+        notas: notas
+    };
 
-    reservationsRef.once('value', (snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-            const key = childSnapshot.key;
-            const refToUpdate = database.ref(`reservasCampamento/${key}`);
-            refToUpdate.update({
-                id: id,
-                nombre: nombre,
-                fecha: fecha,
-                duracion: duracion,
-                tipo: tipo,
-                notas: notas
-            });
-        });
-    });
-
-    // Ocultar el botón después de guardar los cambios
+    update(ref(database, `reservasCampamento/${key}`), updates);
     document.getElementById('guardarCambios').style.display = 'none';
 }
 
-// Eliminar reserva por ID
-window.eliminarReserva = function (id) {
-    const reservationsRef = database.ref('reservasCampamento').orderByChild('id').equalTo(id);
-
-    reservationsRef.once('value', (snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-            const key = childSnapshot.key;
-            const refToDelete = database.ref(`reservasCampamento/${key}`);
-            refToDelete.remove();
-        });
-    });
+// Función para eliminar un registro por su clave (key)
+window.eliminarRegistro = function (key) {
+    remove(ref(database, `reservasCampamento/${key}`));
 }
+
            
 
       </script>
