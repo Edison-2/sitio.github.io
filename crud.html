@@ -123,114 +123,97 @@ button:hover {
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        window.onload = function() {
-    // Configurar Firebase (ya proporcionado en ejemplos anteriores)
-    // ...
+        
+window.crearReserva = function () {
+    const id = document.getElementById('id').value;
+    const nombre = document.getElementById('nombre').value;
+    const fecha = document.getElementById('fecha').value;
+    const duracion = document.getElementById('duracion').value;
+    const tipo = document.getElementById('tipo').value;
+    const notas = document.getElementById('notas').value;
 
-    window.mostrarReservas = function () {
-        const tableBody = document.getElementById('table-body');
-        tableBody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevas reservas
-
-        const databaseRef = ref(database, 'reservasCampamento');
-        onValue(databaseRef, (snapshot) => {
-            snapshot.forEach((childSnapshot) => {
-                const data = childSnapshot.val();
-                const { id, nombre, fecha, duracion, tipo, notas } = data;
-
-                const newRow = crearFilaTabla(childSnapshot.key, id, nombre, fecha, duracion, tipo, notas);
-                tableBody.appendChild(newRow);
-            });
-        });
-    }
-
-    function crearFilaTabla(key, id, nombre, fecha, duracion, tipo, notas) {
-        const newRow = document.createElement('tr');
-        newRow.innerHTML = `
-            <td>${id}</td>
-            <td>${nombre}</td>
-            <td>${fecha}</td>
-            <td>${duracion}</td>
-            <td>${tipo}</td>
-            <td>${notas}</td>
-            <td>
-                <button onclick="eliminarReserva('${key}')">Eliminar</button>
-                <button onclick="prepararEdicion('${key}', '${id}', '${nombre}', '${fecha}', '${duracion}', '${tipo}', '${notas}')">Editar</button>
-            </td>
-        `;
-        return newRow;
-    }
-
-    window.crearReserva = function () {
-        const id = document.getElementById('id').value;
-        const nombre = document.getElementById('nombre').value;
-        const fecha = document.getElementById('fecha').value;
-        const duracion = document.getElementById('duracion').value;
-        const tipo = document.getElementById('tipo').value;
-        const notas = document.getElementById('notas').value;
-
-        const databaseRef = ref(database, 'reservasCampamento');
-        push(databaseRef, {
-            id: id,
-            nombre: nombre,
-            fecha: fecha,
-            duracion: duracion,
-            tipo: tipo,
-            notas: notas
-        });
-    }
-
-    window.prepararEdicion = function (key, id, nombre, fecha, duracion, tipo, notas) {
-        document.getElementById('id').value = id;
-        document.getElementById('nombre').value = nombre;
-        document.getElementById('fecha').value = fecha;
-        document.getElementById('duracion').value = duracion;
-        document.getElementById('tipo').value = tipo;
-        document.getElementById('notas').value = notas;
-
-        // Guardar el key (ID de la reserva) en un atributo del botón Editar
-        const botonEditar = document.getElementById('editarBtn');
-        botonEditar.setAttribute('data-key', key);
-
-        // Mostrar el botón para guardar cambios
-        document.getElementById('guardarCambios').style.display = 'block';
-    }
-
-    window.actualizarReserva = function () {
-        const key = document.getElementById('editarBtn').getAttribute('data-key');
-        const id = document.getElementById('id').value;
-        const nombre = document.getElementById('nombre').value;
-        const fecha = document.getElementById('fecha').value;
-        const duracion = document.getElementById('duracion').value;
-        const tipo = document.getElementById('tipo').value;
-        const notas = document.getElementById('notas').value;
-
-        const databaseRef = ref(database, 'reservasCampamento/' + key);
-        update(databaseRef, {
-            id: id,
-            nombre: nombre,
-            fecha: fecha,
-            duracion: duracion,
-            tipo: tipo,
-            notas: notas
-        });
-
-        // Ocultar el botón después de guardar los cambios
-        document.getElementById('guardarCambios').style.display = 'none';
-    }
-
-    window.eliminarReserva = function (id) {
-        const databaseRef = ref(database, 'reservasCampamento/' + id);
-        remove(databaseRef);
-
-    }
-
-    window.guardarCambios = function () {
-        // Llamada a la función de actualizarReserva existente
-        actualizarReserva();
-    }
+    const reservationsRef = database.ref('reservasCampamento');
+    reservationsRef.push({
+        id: id,
+        nombre: nombre,
+        fecha: fecha,
+        duracion: duracion,
+        tipo: tipo,
+        notas: notas
+    });
 }
 
+window.mostrarReservas = function () {
+    const tableBody = document.getElementById('table-data').getElementsByTagName('tbody')[0];
+    tableBody.innerHTML = '';
 
+    const reservationsRef = database.ref('reservasCampamento');
+    reservationsRef.on('value', (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+            const data = childSnapshot.val();
+            const { id, nombre, fecha, duracion, tipo, notas } = data;
+
+            const newRow = tableBody.insertRow();
+            newRow.innerHTML = `
+                <td>${id}</td>
+                <td>${nombre}</td>
+                <td>${fecha}</td>
+                <td>${duracion}</td>
+                <td>${tipo}</td>
+                <td>${notas}</td>
+                <td>
+                    <button onclick="eliminarReserva('${childSnapshot.key}')">Eliminar</button>
+                    <button onclick="prepararEdicion('${childSnapshot.key}', '${id}', '${nombre}', '${fecha}', '${duracion}', '${tipo}', '${notas}')">Editar</button>
+                </td>
+            `;
+        });
+    });
+}
+
+window.prepararEdicion = function (key, id, nombre, fecha, duracion, tipo, notas) {
+    document.getElementById('id').value = id;
+    document.getElementById('nombre').value = nombre;
+    document.getElementById('fecha').value = fecha;
+    document.getElementById('duracion').value = duracion;
+    document.getElementById('tipo').value = tipo;
+    document.getElementById('notas').value = notas;
+
+    // Guardar el key (ID de la reserva) en un atributo del botón Editar
+    const botonEditar = document.getElementById('guardarCambios');
+    botonEditar.setAttribute('data-key', key);
+
+    // Mostrar el botón para guardar cambios
+    document.getElementById('guardarCambios').style.display = 'block';
+}
+
+window.guardarCambios = function () {
+    const key = document.getElementById('guardarCambios').getAttribute('data-key');
+    const id = document.getElementById('id').value;
+    const nombre = document.getElementById('nombre').value;
+    const fecha = document.getElementById('fecha').value;
+    const duracion = document.getElementById('duracion').value;
+    const tipo = document.getElementById('tipo').value;
+    const notas = document.getElementById('notas').value;
+
+    const reservationsRef = database.ref('reservasCampamento').child(key);
+    reservationsRef.update({
+        id: id,
+        nombre: nombre,
+        fecha: fecha,
+        duracion: duracion,
+        tipo: tipo,
+        notas: notas
+    });
+
+    // Ocultar el botón después de guardar los cambios
+    document.getElementById('guardarCambios').style.display = 'none';
+}
+
+window.eliminarReserva = function (key) {
+    const reservationsRef = database.ref('reservasCampamento').child(key);
+    reservationsRef.remove();
+}
+    
 
       </script>
 </body>
