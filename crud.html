@@ -1,296 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #9abaff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página con Bootstrap</title>
+  <!-- Agrega Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Estilo para el contenedor principal con fondo de imagen */
+    body {
+      background-image: url('ruta_de_tu_imagen.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 100vh; /* Ajusta la altura de la imagen de fondo */
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        h1 {
-            color: #000000;
-        }
-
-        form {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            width: 80%; /* Cambiado el ancho del formulario */
-            max-width: 400px;
-            margin-bottom: 20px;
-            box-sizing: border-box;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-            color: #15016d;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 12px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        table {
-            width: 90%;
-            border-collapse: collapse;
-            margin-top: 50px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #000000;
-            color: white;
-        }
-        button {
-            background-color: #4caf50;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: background-color 0.3s ease;
-        }
-
-
-        @media only screen and (max-width: 600px) {
-            form {
-                width: 90%; /* Ancho del formulario al 90% en pantallas pequeñas */
-            }
-            table {
-                width: 90%; /* Ancho de la tabla al 90% en pantallas pequeñas */
-            }
-        }
-    </style>
+    /* Estilo para el contenedor cuadrado dividido en dos partes */
+    .container {
+      background-color: rgba(255, 255, 255, 0.8); /* Color de fondo semi-transparente */
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 600px;
+    }
+  </style>
 </head>
-
 <body>
-    <h1>Registro de Doctor11</h1>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <form id="doctorForm">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+    
+            <label for="especialidad">Especialidad:</label>
+            <input type="text" id="especialidad" name="especialidad" required>
+    
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" name="direccion">
+    
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono">
+    
+            <label for="correo">Correo Electrónico:</label>
+            <input type="email" id="correo" name="correo">
+    
+            <button type="button" onclick="crearDoctor()">Registrar</button>
+        </form>
 
-    <!-- Formulario de Registro -->
-    <form id="doctorForm">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
+      </div>
+      <div class="col-md-6">
+        <table id="tablaDoctores">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Especialidad</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Correo Electrónico</th>
+                </tr>
+            </thead>
+            <tbody id="bodyTablaDoctores"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-        <label for="especialidad">Especialidad:</label>
-        <input type="text" id="especialidad" name="especialidad" required>
+  <!-- Agrega Bootstrap JS (opcional, para funcionalidades adicionales) -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script type="module">
+    // Importar las funciones necesarias desde los SDK que necesitas
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        <label for="direccion">Dirección:</label>
-        <input type="text" id="direccion" name="direccion">
+    // Tu configuración de Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyBMJsVpnbOwVOiVNbTZScZdet9qlGigDL0",
+        authDomain: "conexion-8ec0d.firebaseapp.com",
+        databaseURL: "https://conexion-8ec0d-default-rtdb.firebaseio.com",
+        projectId: "conexion-8ec0d",
+        storageBucket: "conexion-8ec0d.appspot.com",
+        messagingSenderId: "679910299749",
+        appId: "1:679910299749:web:9800b464879628b4850e8c"
+    };
 
-        <label for="telefono">Teléfono:</label>
-        <input type="tel" id="telefono" name="telefono">
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    let doctorIdToEdit = null;
 
-        <label for="correo">Correo Electrónico:</label>
-        <input type="email" id="correo" name="correo">
+    // Función para validar que la cadena contenga solo letras
+    function contieneSoloLetras(cadena) {
+        return /^[a-zA-Z\s]+$/.test(cadena);
+    }
 
-        <button type="button" onclick="crearDoctor()">Registrar</button>
-    </form>
+    // Función para validar que la cadena contenga solo números
+    function contieneSoloNumeros(cadena) {
+        return /^[0-9]+$/.test(cadena);
+    }
 
-    <!-- Lista de Doctores en una tabla -->
-    <table id="tablaDoctores">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Especialidad</th>
-                <th>Dirección</th>
-                <th>Teléfono</th>
-                <th>Correo Electrónico</th>
-            </tr>
-        </thead>
-        <tbody id="bodyTablaDoctores"></tbody>
-    </table>
+    // Función para crear o actualizar un doctor
+    window.crearDoctor = function () {
+        const nombre = document.getElementById("nombre").value;
+        const especialidad = document.getElementById("especialidad").value;
+        const direccion = document.getElementById("direccion").value;
+        const telefono = document.getElementById("telefono").value;
+        const correo = document.getElementById("correo").value;
 
-    <script type="module">
-        // Importar las funciones necesarias desde los SDK que necesitas
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-        // Tu configuración de Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyBMJsVpnbOwVOiVNbTZScZdet9qlGigDL0",
-            authDomain: "conexion-8ec0d.firebaseapp.com",
-            databaseURL: "https://conexion-8ec0d-default-rtdb.firebaseio.com",
-            projectId: "conexion-8ec0d",
-            storageBucket: "conexion-8ec0d.appspot.com",
-            messagingSenderId: "679910299749",
-            appId: "1:679910299749:web:9800b464879628b4850e8c"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-        let doctorIdToEdit = null;
-
-        // Función para validar que la cadena contenga solo letras
-        function contieneSoloLetras(cadena) {
-            return /^[a-zA-Z\s]+$/.test(cadena);
+        // Verificar si los campos obligatorios están llenos
+        if (!nombre || !especialidad) {
+            alert("Por favor, complete los campos obligatorios");
+            return;
         }
 
-        // Función para validar que la cadena contenga solo números
-        function contieneSoloNumeros(cadena) {
-            return /^[0-9]+$/.test(cadena);
+        // Validar que el nombre contenga solo letras
+        if (!contieneSoloLetras(nombre)) {
+            alert("El campo 'Nombre' debe contener solo letras.");
+            return;
         }
 
-        // Función para crear o actualizar un doctor
-        window.crearDoctor = function () {
-            const nombre = document.getElementById("nombre").value;
-            const especialidad = document.getElementById("especialidad").value;
-            const direccion = document.getElementById("direccion").value;
-            const telefono = document.getElementById("telefono").value;
-            const correo = document.getElementById("correo").value;
+        // Validar que la especialidad contenga solo letras
+        if (!contieneSoloLetras(especialidad)) {
+            alert("El campo 'Especialidad' debe contener solo letras.");
+            return;
+        }
 
-            // Verificar si los campos obligatorios están llenos
-            if (!nombre || !especialidad) {
-                alert("Por favor, complete los campos obligatorios");
-                return;
+        // Validar que el telefono contenga solo números
+        if (telefono && !contieneSoloNumeros(telefono)) {
+            alert("El campo 'Teléfono' debe contener solo números.");
+            return;
+        }
+
+        // Validar que el correo tenga un formato válido
+        if (correo && !/\S+@\S+\.\S+/.test(correo)) {
+            alert("Ingrese un correo electrónico válido.");
+            return;
+        }
+
+        if (doctorIdToEdit) {
+            // Actualizar doctor existente
+            update(ref(database, 'EdisonDaquilema/${doctorIdToEdit}'), {
+                nombre: nombre,
+                especialidad: especialidad,
+                direccion: direccion,
+                telefono: telefono,
+                correo: correo
+            });
+            doctorIdToEdit = null;
+            // Cambiar el texto del botón de nuevo a "Registrar"
+            document.querySelector("button").innerText = "Registrar";
+        } else {
+            // Crear un nuevo doctor
+            push(ref(database, 'EdisonDaquilema'), {
+                nombre: nombre,
+                especialidad: especialidad,
+                direccion: direccion,
+                telefono: telefono,
+                correo: correo
+            });
+        }
+
+        // Limpiar el formulario después de crear o actualizar un doctor
+        limpiarFormulario();
+        // Actualizar la lista de doctores
+        actualizarListaDoctores();
+    }
+
+    // Función para llenar los campos del formulario al editar un doctor
+    window.editarDoctor = function (id) {
+        doctorIdToEdit = id;
+        const databaseRef = ref(database, 'EdisonDaquilema/${id}');
+        onValue(databaseRef, (snapshot) => {
+            const doctor = snapshot.val();
+            if (doctor) {
+                document.getElementById("nombre").value = doctor.nombre || "";
+                document.getElementById("especialidad").value = doctor.especialidad || "";
+                document.getElementById("direccion").value = doctor.direccion || "";
+                document.getElementById("telefono").value = doctor.telefono || "";
+                document.getElementById("correo").value = doctor.correo || "";
+                // Cambiar el texto del botón a "Actualizar"
+                document.querySelector("button").innerText = "Actualizar";
             }
+        });
+    }
 
-            // Validar que el nombre contenga solo letras
-            if (!contieneSoloLetras(nombre)) {
-                alert("El campo 'Nombre' debe contener solo letras.");
-                return;
-            }
-
-            // Validar que la especialidad contenga solo letras
-            if (!contieneSoloLetras(especialidad)) {
-                alert("El campo 'Especialidad' debe contener solo letras.");
-                return;
-            }
-
-            // Validar que el telefono contenga solo números
-            if (telefono && !contieneSoloNumeros(telefono)) {
-                alert("El campo 'Teléfono' debe contener solo números.");
-                return;
-            }
-
-            // Validar que el correo tenga un formato válido
-            if (correo && !/\S+@\S+\.\S+/.test(correo)) {
-                alert("Ingrese un correo electrónico válido.");
-                return;
-            }
-
-            if (doctorIdToEdit) {
-                // Actualizar doctor existente
-                update(ref(database, 'EdisonDaquilema/${doctorIdToEdit}'), {
-                    nombre: nombre,
-                    especialidad: especialidad,
-                    direccion: direccion,
-                    telefono: telefono,
-                    correo: correo
-                });
-                doctorIdToEdit = null;
-                // Cambiar el texto del botón de nuevo a "Registrar"
-                document.querySelector("button").innerText = "Registrar";
-            } else {
-                // Crear un nuevo doctor
-                push(ref(database, 'EdisonDaquilema'), {
-                    nombre: nombre,
-                    especialidad: especialidad,
-                    direccion: direccion,
-                    telefono: telefono,
-                    correo: correo
-                });
-            }
-
-            // Limpiar el formulario después de crear o actualizar un doctor
+    // Función para eliminar un doctor
+    window.eliminarDoctor = function (id) {
+        const confirmacion = confirm("¿Está seguro de eliminar este doctor?");
+        if (confirmacion) {
+            remove(ref(database, 'EdisonDaquilema/${id}'));
+            // Limpiar el formulario después de eliminar un doctor
             limpiarFormulario();
+            doctorIdToEdit = null;
+            // Cambiar el texto del botón de nuevo a "Registrar"
+            document.querySelector("button").innerText = "Registrar";
             // Actualizar la lista de doctores
             actualizarListaDoctores();
         }
+    }
 
-        // Función para llenar los campos del formulario al editar un doctor
-        window.editarDoctor = function (id) {
-            doctorIdToEdit = id;
-            const databaseRef = ref(database, 'EdisonDaquilema/${id}');
-            onValue(databaseRef, (snapshot) => {
-                const doctor = snapshot.val();
-                if (doctor) {
-                    document.getElementById("nombre").value = doctor.nombre || "";
-                    document.getElementById("especialidad").value = doctor.especialidad || "";
-                    document.getElementById("direccion").value = doctor.direccion || "";
-                    document.getElementById("telefono").value = doctor.telefono || "";
-                    document.getElementById("correo").value = doctor.correo || "";
-                    // Cambiar el texto del botón a "Actualizar"
-                    document.querySelector("button").innerText = "Actualizar";
-                }
-            });
-        }
+    // Función para resetear el formulario
+    function limpiarFormulario() {
+        document.getElementById("doctorForm").reset();
+    }
 
-        // Función para eliminar un doctor
-        window.eliminarDoctor = function (id) {
-            const confirmacion = confirm("¿Está seguro de eliminar este doctor?");
-            if (confirmacion) {
-                remove(ref(database, 'EdisonDaquilema/${id}'));
-                // Limpiar el formulario después de eliminar un doctor
-                limpiarFormulario();
-                doctorIdToEdit = null;
-                // Cambiar el texto del botón de nuevo a "Registrar"
-                document.querySelector("button").innerText = "Registrar";
-                // Actualizar la lista de doctores
-                actualizarListaDoctores();
+    // Función para renderizar la lista de doctores en una tabla
+    function actualizarListaDoctores() {
+        const bodyTablaDoctores = document.getElementById("bodyTablaDoctores");
+        bodyTablaDoctores.innerHTML = "";
+
+        const databaseRef = ref(database, 'EdisonDaquilema');
+        onValue(databaseRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                Object.keys(data).forEach((doctorId) => {
+                    const doctor = data[doctorId];
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${doctor.nombre}</td>
+                        <td>${doctor.especialidad}</td>
+                        <td>${doctor.direccion || ""}</td>
+                        <td>${doctor.telefono || ""}</td>
+                        <td>${doctor.correo || ""}</td>
+                        <td>
+                            <button onclick="editarDoctor('${doctorId}')">Editar</button>
+                            <button onclick="eliminarDoctor('${doctorId}')">Eliminar</button>
+                        </td>
+                    `;
+                    bodyTablaDoctores.appendChild(row);
+                });
             }
-        }
+        });
+    }
 
-        // Función para resetear el formulario
-        function limpiarFormulario() {
-            document.getElementById("doctorForm").reset();
-        }
-
-        // Función para renderizar la lista de doctores en una tabla
-        function actualizarListaDoctores() {
-            const bodyTablaDoctores = document.getElementById("bodyTablaDoctores");
-            bodyTablaDoctores.innerHTML = "";
-
-            const databaseRef = ref(database, 'EdisonDaquilema');
-            onValue(databaseRef, (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    Object.keys(data).forEach((doctorId) => {
-                        const doctor = data[doctorId];
-                        const row = document.createElement("tr");
-                        row.innerHTML = `
-                            <td>${doctor.nombre}</td>
-                            <td>${doctor.especialidad}</td>
-                            <td>${doctor.direccion || ""}</td>
-                            <td>${doctor.telefono || ""}</td>
-                            <td>${doctor.correo || ""}</td>
-                            <td>
-                                <button onclick="editarDoctor('${doctorId}')">Editar</button>
-                                <button onclick="eliminarDoctor('${doctorId}')">Eliminar</button>
-                            </td>
-                        `;
-                        bodyTablaDoctores.appendChild(row);
-                    });
-                }
-            });
-        }
-
-        // Cargar la lista inicial de doctores
-        actualizarListaDoctores();
-    </script>
+    // Cargar la lista inicial de doctores
+    actualizarListaDoctores();
+</script>
 </body>
-
 </html>
+
